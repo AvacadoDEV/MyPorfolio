@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anup Rao — Product Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #fdf8f2;
+      --warm-bg:  #f5ede0;
+      --sand:     #e8d5bc;
+      --clay:     #c4855a;
+      --clay-dark:#a06840;
+      --brown:    #5c3d2e;
+      --charcoal: #2d2320;
+      --muted:    #8a6f60;
+      --white:    #ffffff;
+    }
+
+    [data-theme="dark"] {
+      --cream:    #1a1410;
+      --warm-bg:  #231c17;
+      --sand:     #3d2f25;
+      --clay:     #d4956a;
+      --clay-dark:#e0a87c;
+      --brown:    #e8ddd4;
+      --charcoal: #f0e8e0;
+      --muted:    #a89080;
+      --white:    #1a1410;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--cream);
+      color: var(--charcoal);
+      line-height: 1.7;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2.5rem;
+      background: rgba(253, 248, 242, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sand);
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    [data-theme="dark"] nav {
+      background: rgba(26, 20, 16, 0.92);
+    }
+
+    /* ── DARK MODE TOGGLE ── */
+    .theme-toggle {
+      background: var(--warm-bg);
+      border: 1px solid var(--sand);
+      border-radius: 50px;
+      padding: 0.35rem 0.75rem;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+      color: var(--brown);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--clay);
+      color: var(--clay);
+    }
+
+    .theme-toggle .toggle-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .nav-logo {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--brown);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--clay); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 2.5rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 4rem;
+    }
+
+    .hero-text { flex: 1; }
+
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-name {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--brown);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-tagline {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--clay);
+      color: var(--white);
+      border: 2px solid var(--clay);
+    }
+    .btn-primary:hover { background: var(--clay-dark); border-color: var(--clay-dark); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--clay);
+      border: 2px solid var(--clay);
+    }
+    .btn-outline:hover { background: var(--clay); color: var(--white); }
+
+    .hero-avatar {
+      width: 280px;
+      height: 280px;
+      border-radius: 40% 60% 60% 40% / 50% 50% 60% 40%;
+      background: var(--warm-bg);
+      border: 4px solid var(--sand);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      overflow: hidden;
+    }
+
+    /* ── SECTION COMMON ── */
+    section {
+      padding: 5rem 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600;
+      color: var(--brown);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-divider {
+      width: 50px;
+      height: 3px;
+      background: var(--clay);
+      border-radius: 2px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-bio p {
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      font-size: 1.02rem;
+    }
+
+    .about-bio p:last-child { margin-bottom: 0; }
+
+    .skills-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .skill-category h4 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 0.7rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      background: var(--warm-bg);
+      border: 1px solid var(--sand);
+      color: var(--brown);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.3rem 0.85rem;
+      border-radius: 50px;
+      transition: all 0.2s;
+    }
+
+    .tag:hover { background: var(--clay); color: var(--white); border-color: var(--clay); }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--warm-bg); max-width: 100%; padding: 5rem 0; }
+    .experience-inner { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      bottom: 0;
+      width: 2px;
+      background: var(--sand);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 3rem;
+      padding-left: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      background: var(--clay);
+      border-radius: 50%;
+      border: 2px solid var(--warm-bg);
+      box-shadow: 0 0 0 2px var(--clay);
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--clay);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-role {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--brown);
+      margin-bottom: 0.15rem;
+    }
+
+    .timeline-company {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+
+    .timeline-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* Education */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .edu-card {
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+
+    .edu-card .degree {
+      font-weight: 600;
+      color: var(--brown);
+      margin-bottom: 0.2rem;
+    }
+
+    .edu-card .school {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 0.2rem;
+    }
+
+    .edu-card .year {
+      font-size: 0.8rem;
+      color: var(--clay);
+      font-weight: 500;
+    }
+
+    /* ── CONTACT ── */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-intro p {
+      color: var(--muted);
+      font-size: 1.02rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--brown);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    .contact-link:hover { color: var(--clay); }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--warm-bg);
+      border: 1px solid var(--sand);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-form {
+      background: var(--warm-bg);
+      border: 1px solid var(--sand);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--brown);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--sand);
+      border-radius: 10px;
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--clay); }
+
+    .form-group textarea { resize: vertical; min-height: 130px; }
+
+    .form-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--clay);
+      color: var(--white);
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .form-submit:hover { background: var(--clay-dark); }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      border-top: 1px solid var(--sand);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer span { color: var(--clay); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.2rem; }
+      .hero { flex-direction: column-reverse; gap: 2rem; padding-top: 7rem; text-align: center; }
+      .hero-avatar { width: 180px; height: 180px; }
+      .hero-tagline { margin: 0 auto 2.5rem; }
+      .about-grid,
+      .contact-wrapper,
+      .edu-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Anup Rao</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+      <span class="toggle-icon">🌙</span>
+      <span class="toggle-label">Dark</span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <p class="hero-eyebrow">👋 Hello, I'm</p>
+      <h1 class="hero-name">Anup Rao</h1>
+      <p class="hero-tagline">
+        A technical product manager bridging engineering and business — currently driving ad systems at X, with roots in full-stack development and a passion for products that scale.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+        <a href="#experience" class="btn btn-outline">View My Work</a>
+      </div>
+    </div>
+    <div class="hero-avatar">🧑‍💻</div>
+  </div>
+
+  <!-- ABOUT & SKILLS -->
+  <section id="about">
+    <p class="section-label">A little about me</p>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="section-divider"></div>
+    <div class="about-grid">
+      <div class="about-bio">
+        <p>
+          Hi! I'm Anup, a product manager based in Ontario, Canada, with a rare blend of hands-on engineering experience and strategic product thinking. I hold a Master's in Computer Science from Algoma University and have spent years working across ad tech, e-learning, and enterprise software.
+        </p>
+        <p>
+          Currently at X (formerly Twitter), I drive the roadmap for internal ad-serving and campaign validation systems used by global advertisers. I love working at the intersection of data, engineering, and user needs — using metrics to make sharper decisions and shipping features that actually move the needle.
+        </p>
+        <p>
+          When I'm not deep in a backlog or a Datadog dashboard, I'm exploring new technologies, thinking about what makes products truly intuitive, and enjoying life in Canada.
+        </p>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h4>Product</h4>
+          <div class="skill-tags">
+            <span class="tag">Product Strategy</span>
+            <span class="tag">Roadmapping</span>
+            <span class="tag">Agile</span>
+            <span class="tag">A/B Testing</span>
+            <span class="tag">Go-To-Market</span>
+            <span class="tag">User Research</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h4>Technical</h4>
+          <div class="skill-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">React</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">SQL</span>
+            <span class="tag">REST API</span>
+            <span class="tag">AWS</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h4>Tools & Analytics</h4>
+          <div class="skill-tags">
+            <span class="tag">Jira</span>
+            <span class="tag">Confluence</span>
+            <span class="tag">Datadog</span>
+            <span class="tag">Grafana</span>
+            <span class="tag">Prometheus</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" style="padding: 0;">
+    <div class="experience-inner" style="padding-top: 5rem; padding-bottom: 5rem;">
+      <p class="section-label">Where I've been</p>
+      <h2 class="section-title">Experience & Education</h2>
+      <div class="section-divider"></div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <p class="timeline-date">May 2024 – Present</p>
+          <p class="timeline-role">Associate Product Manager</p>
+          <p class="timeline-company">X (Previously Twitter)</p>
+          <p class="timeline-desc">
+            Driving the roadmap for internal ad-serving and campaign validation systems supporting global advertisers and agencies. Partnered with engineering, design, and ad operations to enhance creative rendering, targeting accuracy, and measurement reliability at scale. Prioritized backlogs using data-driven insights from Datadog and Grafana, improving campaign throughput by 18%.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <p class="timeline-date">Sep 2023 – Apr 2024</p>
+          <p class="timeline-role">Associate Product Manager</p>
+          <p class="timeline-company">Artohlam Group Inc.</p>
+          <p class="timeline-desc">
+            Defined PRDs for truck check-in automation features, improving client satisfaction and retention. Collaborated with leadership to balance operational scalability with client-driven needs, and managed end-to-end testing and rollout of new platform APIs across design, QA, and onboarding teams.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <p class="timeline-date">May 2021 – Jul 2022</p>
+          <p class="timeline-role">Frontend Solutions Developer</p>
+          <p class="timeline-company">Webtrigon</p>
+          <p class="timeline-desc">
+            Built custom React UI components and complex web forms integrated with REST APIs, enhancing customer validation processes. Developed JavaScript logic for the Packages Bundle + Save flow and created training materials and workshops for client onboarding and product adoption.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <p class="timeline-date">Apr 2020 – Apr 2021</p>
+          <p class="timeline-role">Platform Developer</p>
+          <p class="timeline-company">Scaler (E-Learning Systems)</p>
+          <p class="timeline-desc">
+            Contributed to Scaler's e-learning platform supporting 15,000+ career transformations and 900+ placement partners. Developed and optimized platform features for scalability and designed RESTful APIs facilitating seamless integration between web and mobile platforms.
+          </p>
+        </div>
+
+        <div class="timeline-item">
+          <p class="timeline-date">Dec 2018 – Mar 2020</p>
+          <p class="timeline-role">Enterprise Operations Analyst</p>
+          <p class="timeline-company">Accenture</p>
+          <p class="timeline-desc">
+            Maintained and developed data within the SAP ecosystem using ABAP, SAPUI5, and SAP HANA. Enhanced vendor invoice workflow efficiency by 15% through process optimization and format pattern recognition.
+          </p>
+        </div>
+
+      </div>
+
+      <div class="edu-grid">
+        <div class="edu-card">
+          <p class="degree">M.S. in Computer Science</p>
+          <p class="school">Algoma University, Ontario, Canada</p>
+          <p class="year">2024</p>
+        </div>
+        <div class="edu-card">
+          <p class="degree">B.S. in Computer Science</p>
+          <p class="school">Amity University, India</p>
+          <p class="year">2015</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">Let's connect</p>
+    <h2 class="section-title">Get in Touch</h2>
+    <div class="section-divider"></div>
+    <div class="contact-wrapper">
+      <div class="contact-intro">
+        <p>
+          Whether you have an exciting product role, a collaboration idea, or just want to connect — I'd love to hear from you. I'm currently open to new opportunities in product management.
+        </p>
+        <div class="contact-links">
+          <a href="mailto:Raonoops@gmail.com" class="contact-link">
+            <span class="contact-icon">✉️</span>
+            Raonoops@gmail.com
+          </a>
+          <a href="tel:9057825239" class="contact-link">
+            <span class="contact-icon">📞</span>
+            905-782-5239
+          </a>
+          <a href="https://www.linkedin.com/in/raoanup" target="_blank" class="contact-link">
+            <span class="contact-icon">💼</span>
+            linkedin.com/in/raoanup
+          </a>
+        </div>
+      </div>
+
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" placeholder="Tell me about your project or just say hello..." required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Crafted with <span>♥</span> by Anup Rao &nbsp;·&nbsp; 2026</p>
+  </footer>
+
+  <script>
+    // ── DARK MODE ──
+    function applyTheme(dark) {
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      const btn = document.querySelector('.theme-toggle');
+      if (btn) {
+        btn.querySelector('.toggle-icon').textContent = dark ? '☀️' : '🌙';
+        btn.querySelector('.toggle-label').textContent = dark ? 'Light' : 'Dark';
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      applyTheme(!isDark);
+    }
+
+    // Load saved preference or system preference on page load
+    (function () {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(saved ? saved === 'dark' : prefersDark);
+    })();
+
+    // ── NAV HIGHLIGHT ──
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.style.color = link.getAttribute('href') === '#' + entry.target.id ? 'var(--clay)' : '';
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+
+    sections.forEach(s => observer.observe(s));
+
+    // ── CONTACT FORM ──
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit');
+      btn.textContent = '✓ Message sent!';
+      btn.style.background = '#7a9e7e';
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        e.target.reset();
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
