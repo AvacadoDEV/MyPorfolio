@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Writer — Anup Rao</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #070714;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hov: rgba(255,255,255,0.08);
+      --border: rgba(196,133,90,0.2);
+      --clay: #c4855a;
+      --clay-light: #e0a87c;
+      --text: #e8e4df;
+      --muted: #9e9a96;
+      --green: #4a8c6a;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    header {
+      max-width: 900px;
+      margin: 0 auto 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      color: var(--clay-light);
+    }
+
+    .how-to {
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.9rem;
+    }
+
+    .layout {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .panel-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--clay);
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--clay-light);
+    }
+
+    input, textarea, select {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 1rem;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--clay);
+      box-shadow: 0 0 12px rgba(196,133,90,0.2);
+    }
+
+    textarea { resize: vertical; }
+    #bodyInput { min-height: 280px; font-size: 0.9rem; line-height: 1.7; }
+
+    select option { background: #1a1410; }
+
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--clay);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px rgba(196,133,90,0.25);
+      margin-top: 0.5rem;
+    }
+
+    .btn-generate:hover {
+      background: var(--clay-light);
+      box-shadow: 0 0 30px rgba(196,133,90,0.4);
+    }
+
+    /* Output panel */
+    .output-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .step-num {
+      width: 22px;
+      height: 22px;
+      background: var(--clay);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .code-box {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: #a8d8a8;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 300px;
+      overflow-y: auto;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .code-placeholder {
+      color: var(--muted);
+      font-style: italic;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+    }
+
+    .btn-copy {
+      padding: 0.65rem 1.25rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--clay-light);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-self: flex-end;
+    }
+
+    .btn-copy:hover {
+      border-color: var(--clay);
+      box-shadow: 0 0 12px rgba(196,133,90,0.2);
+    }
+
+    .btn-copy.copied {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+
+    .preview-section {
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .preview-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 0.75rem;
+    }
+
+    .preview-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(196,133,90,0.3);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .preview-card .p-cat  { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay); margin-bottom: 0.4rem; }
+    .preview-card .p-title { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: white; margin-bottom: 0.4rem; line-height: 1.3; }
+    .preview-card .p-excerpt { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+    .preview-card .p-date { font-size: 0.78rem; color: var(--muted); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(196,133,90,0.15); }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="logo">✍️ Blog Writer</span>
+    <span class="how-to">Open this file locally in your browser</span>
+  </header>
+
+  <div class="layout">
+
+    <!-- INPUT PANEL -->
+    <div class="panel">
+      <p class="panel-title">Write your post</p>
+
+      <div class="form-group">
+        <label for="titleInput">Title</label>
+        <input type="text" id="titleInput" placeholder="e.g. How I approach roadmap prioritization" oninput="updatePreview()" />
+      </div>
+
+      <div class="form-group">
+        <label for="categoryInput">Category</label>
+        <select id="categoryInput" oninput="updatePreview()">
+          <option value="Product Management">Product Management</option>
+          <option value="Career">Career</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Leadership">Leadership</option>
+          <option value="Ad Tech">Ad Tech</option>
+          <option value="Personal">Personal</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="excerptInput">Excerpt (shown on the card)</label>
+        <textarea id="excerptInput" rows="3" placeholder="A 1-2 sentence summary that hooks the reader..." oninput="updatePreview()"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="bodyInput">Body</label>
+        <p class="hint">Paste your full post here. Use <strong style="color:var(--clay-light)">[h3]Your Heading[/h3]</strong> for subheadings and <strong style="color:var(--clay-light)">[b]text[/b]</strong> for bold.</p>
+        <textarea id="bodyInput" placeholder="Paste your full blog post here...&#10;&#10;[h3]Section Heading[/h3]&#10;Your paragraph text goes here..."></textarea>
+      </div>
+
+      <button class="btn-generate" onclick="generate()">Generate Snippet →</button>
+    </div>
+
+    <!-- OUTPUT PANEL -->
+    <div class="panel output-panel">
+      <p class="panel-title">How to publish</p>
+
+      <div class="steps">
+        <div class="step"><span class="step-num">1</span><span>Click <strong style="color:var(--text)">Generate Snippet</strong> after filling in your post</span></div>
+        <div class="step"><span class="step-num">2</span><span>Copy the generated code below</span></div>
+        <div class="step"><span class="step-num">3</span><span>Open <strong style="color:var(--text)">blogs.js</strong> in VS Code</span></div>
+        <div class="step"><span class="step-num">4</span><span>Paste the snippet at the <strong style="color:var(--text)">TOP</strong> of the <code style="color:var(--clay-light)">blogPosts</code> array (after the <code style="color:var(--clay-light)">[</code>)</span></div>
+        <div class="step"><span class="step-num">5</span><span>Run <code style="color:var(--clay-light)">git add . && git commit -m "New post" && git push</code></span></div>
+      </div>
+
+      <div id="codeBox" class="code-box">
+        <span class="code-placeholder">Your snippet will appear here after you click Generate →</span>
+      </div>
+
+      <button class="btn-copy" id="copyBtn" onclick="copySnippet()">Copy snippet</button>
+
+      <div class="preview-section">
+        <p class="preview-label">Card preview</p>
+        <div class="preview-card">
+          <p class="p-cat"  id="prevCat">Category</p>
+          <p class="p-title" id="prevTitle">Your blog title will appear here</p>
+          <p class="p-excerpt" id="prevExcerpt">Your excerpt will appear here...</p>
+          <p class="p-date"  id="prevDate"></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let generatedSnippet = '';
+
+    function updatePreview() {
+      document.getElementById('prevCat').textContent    = document.getElementById('categoryInput').value || 'Category';
+      document.getElementById('prevTitle').textContent  = document.getElementById('titleInput').value   || 'Your blog title will appear here';
+      document.getElementById('prevExcerpt').textContent = document.getElementById('excerptInput').value || 'Your excerpt will appear here...';
+    }
+
+    function formatBody(raw) {
+      if (!raw.trim()) return '<p>No content provided.</p>';
+      let html = raw
+        .replace(/\[h3\](.*?)\[\/h3\]/g, '<h3>$1</h3>')
+        .replace(/\[b\](.*?)\[\/b\]/g,   '<strong>$1</strong>');
+      // Split on double newlines into paragraphs
+      return html.split(/\n{2,}/).map(para => {
+        para = para.trim();
+        if (!para) return '';
+        if (para.startsWith('<h3>')) return para;
+        return `<p>${para.replace(/\n/g, ' ')}</p>`;
+      }).filter(Boolean).join('\n      ');
+    }
+
+    function getNextId() {
+      // Simple timestamp-based ID
+      return Date.now();
+    }
+
+    function getTodayDate() {
+      return new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function escapeForJs(str) {
+      return str.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+    }
+
+    function generate() {
+      const title    = document.getElementById('titleInput').value.trim();
+      const category = document.getElementById('categoryInput').value.trim();
+      const excerpt  = document.getElementById('excerptInput').value.trim();
+      const rawBody  = document.getElementById('bodyInput').value.trim();
+
+      if (!title || !excerpt || !rawBody) {
+        alert('Please fill in Title, Excerpt, and Body before generating.');
+        return;
+      }
+
+      const date   = getTodayDate();
+      const id     = getNextId();
+      const body   = formatBody(rawBody);
+
+      document.getElementById('prevDate').textContent = date;
+
+      generatedSnippet =
+`  {
+    id: ${id},
+    title: "${escapeForJs(title)}",
+    date: "${date}",
+    category: "${escapeForJs(category)}",
+    excerpt: "${escapeForJs(excerpt)}",
+    body: \`
+      ${escapeForJs(body)}
+    \`
+  },`;
+
+      document.getElementById('codeBox').textContent = generatedSnippet;
+      document.getElementById('copyBtn').classList.remove('copied');
+      document.getElementById('copyBtn').textContent = 'Copy snippet';
+    }
+
+    function copySnippet() {
+      if (!generatedSnippet) { alert('Generate a snippet first!'); return; }
+      navigator.clipboard.writeText(generatedSnippet).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy snippet';
+          btn.classList.remove('copied');
+        }, 2500);
+      });
+    }
+
+    // Init preview date
+    document.getElementById('prevDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  </script>
+
+</body>
+</html>
