@@ -249,8 +249,11 @@
       padding: 1.25rem;
     }
 
+    .preview-card .p-hero { position: relative; width: 100%; height: 110px; border-radius: 8px; overflow: hidden; margin-bottom: 0.75rem; background: linear-gradient(135deg, rgba(196,133,90,0.15), rgba(7,7,20,0.8)); display:flex; align-items:center; justify-content:center; font-size:1.8rem; }
+    .preview-card .p-hero img { width:100%; height:100%; object-fit:cover; }
+    .preview-card .p-hero-overlay { position:absolute; bottom:0; left:0; right:0; padding:0.5rem 0.75rem; background:linear-gradient(to top,rgba(7,7,20,0.95),transparent); }
+    .preview-card .p-hero-title { font-family:'Lora',serif; font-size:0.85rem; font-weight:600; color:white; }
     .preview-card .p-cat  { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--clay); margin-bottom: 0.4rem; }
-    .preview-card .p-title { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: white; margin-bottom: 0.4rem; line-height: 1.3; }
     .preview-card .p-excerpt { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
     .preview-card .p-date { font-size: 0.78rem; color: var(--muted); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(196,133,90,0.15); }
 
@@ -290,6 +293,12 @@
       </div>
 
       <div class="form-group">
+        <label for="imageInput">Hero image filename</label>
+        <input type="text" id="imageInput" placeholder="e.g. my-post-hero.jpg" oninput="updatePreview()" />
+        <span class="hint">Save your image to the <strong style="color:var(--clay-light)">blog-images/</strong> folder first, then enter just the filename here.</span>
+      </div>
+
+      <div class="form-group">
         <label for="excerptInput">Excerpt (shown on the card)</label>
         <textarea id="excerptInput" rows="3" placeholder="A 1-2 sentence summary that hooks the reader..." oninput="updatePreview()"></textarea>
       </div>
@@ -324,10 +333,13 @@
       <div class="preview-section">
         <p class="preview-label">Card preview</p>
         <div class="preview-card">
-          <p class="p-cat"  id="prevCat">Category</p>
-          <p class="p-title" id="prevTitle">Your blog title will appear here</p>
+          <div class="p-hero" id="prevHero">
+            ✍️
+            <div class="p-hero-overlay"><p class="p-hero-title" id="prevHeroTitle">Your title here</p></div>
+          </div>
+          <p class="p-cat" id="prevCat">Category</p>
           <p class="p-excerpt" id="prevExcerpt">Your excerpt will appear here...</p>
-          <p class="p-date"  id="prevDate"></p>
+          <p class="p-date" id="prevDate"></p>
         </div>
       </div>
     </div>
@@ -338,9 +350,19 @@
     let generatedSnippet = '';
 
     function updatePreview() {
-      document.getElementById('prevCat').textContent    = document.getElementById('categoryInput').value || 'Category';
-      document.getElementById('prevTitle').textContent  = document.getElementById('titleInput').value   || 'Your blog title will appear here';
-      document.getElementById('prevExcerpt').textContent = document.getElementById('excerptInput').value || 'Your excerpt will appear here...';
+      const title   = document.getElementById('titleInput').value   || 'Your blog title will appear here';
+      const image   = document.getElementById('imageInput').value.trim();
+      const heroEl  = document.getElementById('prevHero');
+
+      document.getElementById('prevCat').textContent      = document.getElementById('categoryInput').value || 'Category';
+      document.getElementById('prevHeroTitle').textContent = title;
+      document.getElementById('prevExcerpt').textContent  = document.getElementById('excerptInput').value || 'Your excerpt will appear here...';
+
+      if (image) {
+        heroEl.innerHTML = `<img src="blog-images/${image}" onerror="this.parentElement.innerHTML='✍️<div class=\\'p-hero-overlay\\'><p class=\\'p-hero-title\\'>${title}</p></div>'" /><div class="p-hero-overlay"><p class="p-hero-title">${title}</p></div>`;
+      } else {
+        heroEl.innerHTML = `✍️<div class="p-hero-overlay"><p class="p-hero-title">${title}</p></div>`;
+      }
     }
 
     function formatBody(raw) {
@@ -373,6 +395,7 @@
     function generate() {
       const title    = document.getElementById('titleInput').value.trim();
       const category = document.getElementById('categoryInput').value.trim();
+      const image    = document.getElementById('imageInput').value.trim();
       const excerpt  = document.getElementById('excerptInput').value.trim();
       const rawBody  = document.getElementById('bodyInput').value.trim();
 
@@ -393,6 +416,7 @@
     title: "${escapeForJs(title)}",
     date: "${date}",
     category: "${escapeForJs(category)}",
+    image: "${escapeForJs(image)}",
     excerpt: "${escapeForJs(excerpt)}",
     body: \`
       ${escapeForJs(body)}

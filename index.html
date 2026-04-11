@@ -622,13 +622,12 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 1.75rem;
       cursor: pointer;
       transition: all 0.3s;
       animation: floatSlow 10s ease-in-out infinite;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      overflow: hidden;
     }
 
     .blog-card:nth-child(2) { animation-delay: 1s; }
@@ -641,24 +640,71 @@
       background: var(--surface-hov);
     }
 
+    /* Hero image with title overlay */
+    .blog-card-hero {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .blog-card-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .blog-card:hover .blog-card-hero img {
+      transform: scale(1.05);
+    }
+
+    .blog-card-hero-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(196,133,90,0.15) 0%, rgba(7,7,20,0.8) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .blog-card-hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem 1.25rem 0.85rem;
+      background: linear-gradient(to top, rgba(7,7,20,0.95) 0%, rgba(7,7,20,0.5) 70%, transparent 100%);
+    }
+
+    .blog-card-hero-title {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.35;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    }
+
+    /* Card body below image */
+    .blog-card-body {
+      padding: 1rem 1.25rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      flex: 1;
+    }
+
     .blog-category {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--clay);
     }
 
-    .blog-title {
-      font-family: 'Lora', serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--white);
-      line-height: 1.4;
-    }
-
     .blog-excerpt {
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       color: var(--muted);
       line-height: 1.6;
       flex: 1;
@@ -668,7 +714,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--muted);
       border-top: 1px solid var(--border);
       padding-top: 0.75rem;
@@ -705,20 +751,72 @@
       border-radius: 20px;
       max-width: 750px;
       width: 100%;
-      padding: 3rem;
       position: relative;
       margin: auto;
       box-shadow: 0 0 60px var(--glow);
       animation: fadeInUp 0.3s ease both;
+      overflow: hidden;
     }
 
+    /* Hero image inside modal */
+    .modal-hero {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .modal-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-hero-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(196,133,90,0.2) 0%, rgba(7,7,20,0.9) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .modal-hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem 2.5rem 1.25rem;
+      background: linear-gradient(to top, rgba(7,7,20,0.97) 0%, rgba(7,7,20,0.5) 70%, transparent 100%);
+    }
+
+    .modal-hero-category {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-hero-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.3;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Modal close button */
     .modal-close {
       position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      background: var(--surface);
+      top: 1rem;
+      right: 1rem;
+      background: rgba(7,7,20,0.7);
+      backdrop-filter: blur(8px);
       border: 1px solid var(--border);
-      color: var(--muted);
+      color: var(--text);
       width: 36px;
       height: 36px;
       border-radius: 50%;
@@ -728,39 +826,27 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
+      z-index: 10;
     }
 
     .modal-close:hover { border-color: var(--clay); color: var(--clay-light); }
 
-    .modal-category {
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--clay);
-      margin-bottom: 0.75rem;
-    }
-
-    .modal-title {
-      font-family: 'Lora', serif;
-      font-size: clamp(1.5rem, 3vw, 2rem);
-      font-weight: 600;
-      color: var(--white);
-      line-height: 1.3;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 30px var(--glow);
+    /* Modal text content area */
+    .modal-text {
+      padding: 1.5rem 2.5rem 2.5rem;
     }
 
     .modal-date {
       font-size: 0.85rem;
       color: var(--muted);
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
       border-bottom: 1px solid var(--border);
     }
 
     .modal-body { color: var(--muted); font-size: 1rem; line-height: 1.85; }
     .modal-body p { margin-bottom: 1.25rem; }
+    .modal-body p:last-child { margin-bottom: 0; }
     .modal-body h3 {
       font-family: 'Lora', serif;
       color: var(--white);
@@ -990,10 +1076,13 @@
   <div class="modal-overlay" id="blogModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal()">✕</button>
-      <p class="modal-category" id="modalCategory"></p>
-      <h2 class="modal-title" id="modalTitle"></h2>
-      <p class="modal-date" id="modalDate"></p>
-      <div class="modal-body" id="modalBody"></div>
+      <!-- Hero image with title overlay -->
+      <div class="modal-hero" id="modalHero"></div>
+      <!-- Text content -->
+      <div class="modal-text">
+        <p class="modal-date" id="modalDate"></p>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
     </div>
   </div>
 
@@ -1067,12 +1156,22 @@
       grid.className = 'blogs-grid';
       grid.innerHTML = posts.map(post => `
         <div class="blog-card" onclick="openModal(${post.id})">
-          <p class="blog-category">${post.category}</p>
-          <h3 class="blog-title">${post.title}</h3>
-          <p class="blog-excerpt">${post.excerpt}</p>
-          <div class="blog-meta">
-            <span>${post.date}</span>
-            <span class="blog-read-more">Read more →</span>
+          <div class="blog-card-hero">
+            ${post.image
+              ? `<img src="blog-images/${post.image}" alt="${post.title}" />`
+              : `<div class="blog-card-hero-placeholder">✍️</div>`
+            }
+            <div class="blog-card-hero-overlay">
+              <h3 class="blog-card-hero-title">${post.title}</h3>
+            </div>
+          </div>
+          <div class="blog-card-body">
+            <p class="blog-category">${post.category}</p>
+            <p class="blog-excerpt">${post.excerpt}</p>
+            <div class="blog-meta">
+              <span>${post.date}</span>
+              <span class="blog-read-more">Read more →</span>
+            </div>
           </div>
         </div>
       `).join('');
@@ -1081,10 +1180,22 @@
     function openModal(id) {
       const post = blogPosts.find(p => p.id === id);
       if (!post) return;
-      document.getElementById('modalCategory').textContent = post.category;
-      document.getElementById('modalTitle').textContent    = post.title;
-      document.getElementById('modalDate').textContent     = post.date;
-      document.getElementById('modalBody').innerHTML       = post.body;
+
+      // Build hero image section
+      const heroEl = document.getElementById('modalHero');
+      heroEl.innerHTML = `
+        ${post.image
+          ? `<img src="blog-images/${post.image}" alt="${post.title}" />`
+          : `<div class="modal-hero-placeholder">✍️</div>`
+        }
+        <div class="modal-hero-overlay">
+          <p class="modal-hero-category">${post.category}</p>
+          <h2 class="modal-hero-title">${post.title}</h2>
+        </div>
+      `;
+
+      document.getElementById('modalDate').textContent = post.date;
+      document.getElementById('modalBody').innerHTML   = post.body;
       document.getElementById('blogModal').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
