@@ -814,6 +814,64 @@
       text-shadow: 0 0 10px var(--glow);
     }
 
+    /* ── INTRO CARD ── */
+    .intro-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(7, 7, 20, 0.92);
+      backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .intro-overlay.open { display: flex; }
+
+    .intro-card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      border: 1px solid var(--border-hov);
+      border-radius: 20px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 86vh;
+      overflow-y: auto;
+      padding: 2.5rem 2.5rem 2rem;
+      position: relative;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5), 0 0 60px var(--glow);
+      animation: fadeInUp 0.3s ease both;
+    }
+
+    .intro-kicker {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--clay);
+      margin-bottom: 0.6rem;
+    }
+
+    .intro-title {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .intro-body p {
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1.1rem;
+    }
+    .intro-body p:last-child { margin-bottom: 0; }
+
+    .intro-cta { margin-top: 1.75rem; }
+
     /* ── BLOG MODAL ── */
     .modal-overlay {
       display: none;
@@ -1010,6 +1068,23 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
+
+  <!-- INTRO CARD -->
+  <div class="intro-overlay" id="introOverlay">
+    <div class="intro-card">
+      <button class="modal-close" onclick="closeIntroCard()">✕</button>
+      <p class="intro-kicker">god is in the details</p>
+      <h2 class="intro-title">why the small stuff is the whole pitch</h2>
+      <div class="intro-body">
+        <p>Nobody hires a PM to care about how a cursor looks when you hover a card. That's not on any job description I've ever seen. But it's the kind of thing I can't leave alone.</p>
+        <p>I spent real time on this exact site arguing with myself over a circle that's 18 pixels instead of 12, whether it should grow on hover or just change color, and whether opening a panel should feel like reading or like adjusting a dial. Not because anyone asked. Because if the small thing is wrong, I don't trust myself on the big thing next to it.</p>
+        <p>That's the part of the job that doesn't show up in a roadmap review. Nobody puts "cursor felt orienting" on a PRD. But it's the same muscle as catching that an error message says "something went wrong" instead of telling someone what actually broke, or noticing that a metric everyone's celebrating doesn't match what users are actually doing. The skill isn't having good taste. It's being unable to stop noticing when something's slightly off, and caring enough to go fix it even when nobody would've caught it.</p>
+        <p>I've worked across ad systems, internal platform tools, and customer-facing flows, in roles that ranged from writing the code to owning the roadmap. The thread through all of it isn't a specific skill. It's that I'd rather be the person who catches the bad call before it ships, even when that person is me, than the one who defends a decision because reversing it feels harder than living with it.</p>
+        <p>That's not a flashy pitch. But it's the honest one.</p>
+      </div>
+      <button class="btn btn-primary intro-cta" onclick="goToCaseStudies()">Show me the receipts →</button>
+    </div>
+  </div>
 
   <!-- HERO -->
   <div class="hero">
@@ -1593,6 +1668,31 @@
     });
 
     renderBlogs();
+
+    // ── INTRO CARD ──
+    function closeIntroCard() {
+      document.getElementById('introOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function goToCaseStudies() {
+      closeIntroCard();
+      document.getElementById('blogs').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('introOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeIntroCard();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('introOverlay').classList.contains('open')) closeIntroCard();
+    });
+
+    if (!localStorage.getItem('introCardSeen')) {
+      document.getElementById('introOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      localStorage.setItem('introCardSeen', '1');
+    }
 
     // ── CASE STUDY CURSOR (desktop only) ──
     let panelType = 'case';
